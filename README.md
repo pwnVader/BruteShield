@@ -2,6 +2,8 @@
 
 BruteShield is a **powerful** and **simple** web tool for **checking password strength** and **generating secure passwords**. It allows users to check how strong a password is and estimates how long it would take for an attacker to crack it. Additionally, BruteShield features a **secure password generator** with customizable options like length, character types (uppercase, lowercase, numbers, symbols), and more!
 
+You can access the tool here: [BruteShield - Password Tool](https://pwnvader.github.io/BruteShield/)
+
 ---
 
 ## 🚀 Features
@@ -32,6 +34,4 @@ BruteShield is a **powerful** and **simple** web tool for **checking password st
    - Click **Generate**, and a strong password will be displayed.
 
 ---
-
-## ⚙️ Use
 
