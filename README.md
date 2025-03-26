@@ -16,6 +16,7 @@ BruteShield is a **powerful** and **simple** web tool for **checking password st
 
 ## 📸 Demo
 
+![BruteShield Demo](bruteshieldsc.png)
 
 ---
 
