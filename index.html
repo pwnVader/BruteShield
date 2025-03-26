@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BruteShield - Password Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0f1c;
+            color: #e5e7eb;
+            font-family: 'Fira Code', monospace;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #60a5fa;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .box {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1 1 400px;
+            box-shadow: 0 0 8px rgba(96, 165, 250, 0.1);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"] {
+            width: calc(100% - 30px);
+            padding: 12px 14px;
+            background: #0a0f1c;
+            border: 1px solid #1f2937;
+            color: #e5e7eb;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 14px;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .options {
+            margin-top: 10px;
+        }
+
+        .options label {
+            display: block;
+            margin-top: 8px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 18px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #059669;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #0a0f1c;
+            border: 1px solid #1f2937;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .strength-weak {
+            color: #ef4444;
+        }
+
+        .strength-medium {
+            color: #facc15;
+        }
+
+        .strength-strong {
+            color: #60a5fa;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 13px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .footer a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🛡️ BruteShield</h1>
+    <div class="container">
+        <div class="box">
+            <h2>🔍 Check Password Strength</h2>
+            <input type="password" id="passwordInput" placeholder="Enter your password..." oninput="checkStrength()" />
+            <div class="result" id="strengthResult">Type a password to analyze...</div>
+        </div>
+        <div class="box">
+            <h2>🔐 Generate Secure Password</h2>
+            <label>Length:</label>
+            <input type="number" id="length" value="16" min="4" max="100" />
+            <div class="options">
+                <label><input type="checkbox" id="upper" checked /> Include Uppercase</label>
+                <label><input type="checkbox" id="lower" checked /> Include Lowercase</label>
+                <label><input type="checkbox" id="numbers" checked /> Include Numbers</label>
+                <label><input type="checkbox" id="symbols" checked /> Include Symbols</label>
+            </div>
+            <button onclick="generatePassword()">Generate</button>
+            <div class="result" id="generatedPassword">Your password will appear here.</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        by <span style="color:#e5e7eb;">pwnVader</span>
+        <a href="https://github.com/pwnVader" target="_blank" title="GitHub" style="margin: 0 8px;">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub"
+                style="width:18px; filter: invert(70%); vertical-align: middle;">
+        </a>
+        <a href="https://www.linkedin.com/in/jesuspromero/" target="_blank" title="LinkedIn">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn"
+                style="width:18px; filter: invert(70%); vertical-align: middle;">
+        </a>
+    </div>
+
+    <script>
+        function checkStrength() {
+            const pass = document.getElementById("passwordInput").value;
+            const result = document.getElementById("strengthResult");
+            let strength = 0;
+            if (pass.length >= 8) strength++;
+            if (/[A-Z]/.test(pass)) strength++;
+            if (/[0-9]/.test(pass)) strength++;
+            if (/[^A-Za-z0-9]/.test(pass)) strength++;
+            if (pass.length >= 16) strength++;
+
+            let label = "Too weak";
+            let className = "strength-weak";
+            if (strength >= 4) {
+                label = "Strong 🔐 — estimated crack time: years";
+                className = "strength-strong";
+            } else if (strength === 3) {
+                label = "Medium ⚠️ — could be guessed in days/weeks";
+                className = "strength-medium";
+            } else if (strength <= 2 && pass.length > 0) {
+                label = "Weak 🔓 — easily crackable";
+                className = "strength-weak";
+            } else if (pass.length === 0) {
+                label = "Type a password to analyze...";
+                className = "";
+            }
+
+            result.innerHTML = `<span class="${className}">${label}</span>`;
+        }
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById("length").value);
+            if (length > 100) {
+                alert("Password length cannot exceed 100 characters.");
+                return;
+            }
+
+            const upper = document.getElementById("upper").checked;
+            const lower = document.getElementById("lower").checked;
+            const numbers = document.getElementById("numbers").checked;
+            const symbols = document.getElementById("symbols").checked;
+
+            const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lowerChars = "abcdefghijklmnopqrstuvwxyz";
+            const numberChars = "0123456789";
+            const symbolChars = "!@#$%^&*()-_=+[]{};:,.<>?";
+
+            let allChars = "";
+            if (upper) allChars += upperChars;
+            if (lower) allChars += lowerChars;
+            if (numbers) allChars += numberChars;
+            if (symbols) allChars += symbolChars;
+
+            if (allChars.length === 0) {
+                document.getElementById("generatedPassword").textContent = "Please select at least one character set.";
+                return;
+            }
+
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * allChars.length);
+                password += allChars[randomIndex];
+            }
+
+            document.getElementById("generatedPassword").textContent = password;
+        }
+    </script>
+</body>
+
+</html>
