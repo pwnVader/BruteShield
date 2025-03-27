@@ -135,6 +135,8 @@
             </div>
             <button onclick="generatePassword()">Generate</button>
             <div class="result" id="generatedPassword">Your password will appear here.</div>
+            <!-- Copy Button -->
+            <button onclick="copyPassword()">Copy Password</button>
         </div>
     </div>
 
@@ -215,6 +217,13 @@
             }
 
             document.getElementById("generatedPassword").textContent = password;
+        }
+
+        function copyPassword() {
+            const password = document.getElementById("generatedPassword").textContent;
+            navigator.clipboard.writeText(password).then(() => {
+                alert("Password copied to clipboard!");
+            });
         }
     </script>
 </body>
